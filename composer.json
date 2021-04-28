@@ -1,23 +1,28 @@
 {
-    "name": "spatie/laravel-package-tools",
-    "description": "Tools for creating Laravel packages",
+    "name": "nguyenhiep/vietnamese-related-words",
+    "description": "Make related words from vietnamese string",
     "keywords": [
-        "spatie",
-        "laravel-package-tools"
+        "related",
+        "words",
+        "related words",
+        "extract words",
+        "vietnamese"
     ],
-    "homepage": "https://github.com/spatie/laravel-package-tools",
+    "homepage": "https://github.com/nguyenhiepvan/vietnamese-related-words",
     "license": "MIT",
     "authors": [
         {
-            "name": "Freek Van der Herten",
-            "email": "freek@spatie.be",
+            "name": "Nguyễn Văn Hiệp",
+            "email": "nguyenheipvan.bka@gmail.com",
             "role": "Developer"
         }
     ],
     "require": {
         "php": "^7.4|^8.0",
-        "illuminate/contracts": "^7.0|^8.0",
-        "mockery/mockery": "^1.4"
+        "guzzlehttp/guzzle": "^7.0.1",
+        "mockery/mockery": "^1.4",
+        "symfony/process": "^5.2",
+        "ext-json": "*"
     },
     "require-dev": {
         "orchestra/testbench": "^5.0|^6.0",
@@ -26,8 +31,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Spatie\\LaravelPackageTools\\": "src",
-            "Spatie\\LaravelPackageTools\\Database\\Factories\\": "database/factories"
+            "Nguyenhiep\\VietnameseRelatedWords\\": "src"
         }
     },
     "autoload-dev": {

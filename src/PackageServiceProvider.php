@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\LaravelPackageTools;
+namespace Nguyenhiep\VietnameseRelatedWords;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\View;
@@ -57,7 +57,7 @@ abstract class PackageServiceProvider extends ServiceProvider
 
             $now = Carbon::now();
             foreach ($this->package->migrationFileNames as $migrationFileName) {
-                if (! $this->migrationFileExists($migrationFileName)) {
+                if (!$this->migrationFileExists($migrationFileName)) {
                     $this->publishes([
                         $this->package->basePath("/../database/migrations/{$migrationFileName}.php.stub") => database_path('migrations/' . $now->addSecond()->format('Y_m_d_His') . '_' . Str::of($migrationFileName)->snake()->finish('.php')),
                     ], "{$this->package->shortName()}-migrations");
@@ -77,7 +77,7 @@ abstract class PackageServiceProvider extends ServiceProvider
             }
         }
 
-        if (! empty($this->package->commands)) {
+        if (!empty($this->package->commands)) {
             $this->commands($this->package->commands);
         }
 
