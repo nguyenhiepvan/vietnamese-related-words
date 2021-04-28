@@ -29,3 +29,4 @@ mapping | additional mapping rules
 - [VncoreNlp](https://github.com/vncorenlp/VnCoreNLP)
 - [Coccoc tokenizer](https://github.com/coccoc/coccoc-tokenizer)
 - [Vietnamese Analysis Plugin for Elasticsearch](https://github.com/duydo/elasticsearch-analysis-vietnamese)
+- [Laravel package tools](https://github.com/spatie/laravel-package-tools)
