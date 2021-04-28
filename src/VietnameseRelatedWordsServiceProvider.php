@@ -8,10 +8,8 @@
 
 namespace Nguyenhiep\VietnameseRelatedWords;
 
-
 class VietnameseRelatedWordsServiceProvider extends PackageServiceProvider
 {
-
     public function configurePackage(Package $package): void
     {
         $package->name('nguyenhiep/vietnamese-related-words')

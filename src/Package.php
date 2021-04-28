@@ -81,7 +81,7 @@ class Package
 
     public function hasViewComposer($view, $viewComposer): self
     {
-        if (!is_array($view)) {
+        if (! is_array($view)) {
             $view = [$view];
         }
 

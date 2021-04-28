@@ -8,7 +8,6 @@
 
 namespace Nguyenhiep\VietnameseRelatedWords;
 
-
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -16,7 +15,6 @@ use Symfony\Component\Process\Process;
 
 class VietnameseAnalyzer
 {
-
     protected $mapping = [
         "N",
         "V",
@@ -61,7 +59,7 @@ class VietnameseAnalyzer
     public function __construct($debug = false, $mapping = [])
     {
         $this->mapping = array_unique(array_merge($this->mapping, $mapping, config("vietnamese-related-words.mapping", [])));
-        $this->debug   = $debug;
+        $this->debug = $debug;
     }
 
     /**
@@ -72,24 +70,27 @@ class VietnameseAnalyzer
      */
     public function es_analyze($text)
     {
-        $client   = new Client(["base_uri" => config("vietnamese-related-words.es_host")]);
+        $client = new Client(["base_uri" => config("vietnamese-related-words.es_host")]);
         $response = $client->request("GET", "_analyze", [
             RequestOptions::JSON => [
                 "analyzer" => "vi_analyzer",
-                "text"     => $text
-            ]
+                "text" => $text,
+            ],
         ]);
+
         try {
-            $tokens  = json_decode($response->getBody()->getContents(), true)["tokens"];
+            $tokens = json_decode($response->getBody()->getContents(), true)["tokens"];
             $phrases = [];
             foreach ($tokens as $token) {
                 if ($token["type"] == "<WORD>") {
                     $phrases[] = $token["token"];
                 }
             }
+
             return array_unique($phrases);
         } catch (\Exception $exception) {
         }
+
         return [];
     }
 
@@ -101,7 +102,7 @@ class VietnameseAnalyzer
      */
     public function vncorenlp($text)
     {
-        $tokens      = $this->getTokens($text);
+        $tokens = $this->getTokens($text);
         $type_chains = "";
         foreach ($tokens as $token) {
             if (isset($token[2])) {
@@ -118,11 +119,12 @@ class VietnameseAnalyzer
                             $pharse .= "{$tokens[$p][1]}_";
                         }
                     }
-                    $pharse    = str_replace("_", " ", $pharse);
+                    $pharse = str_replace("_", " ", $pharse);
                     $pharses[] = trim($pharse) . ($this->debug ? ":$valid_chain" : "");
                 }
             }
         }
+
         return array_unique(array_filter($pharses, function ($v, $k) {
             return $v && substr_count($v, " ");
         }, ARRAY_FILTER_USE_BOTH));
@@ -136,11 +138,12 @@ class VietnameseAnalyzer
      */
     protected function getTokens($text)
     {
-        $temp_in  = tmpfile();
-        $path_in  = stream_get_meta_data($temp_in)['uri'];
+        $temp_in = tmpfile();
+        $path_in = stream_get_meta_data($temp_in)['uri'];
         $temp_out = tmpfile();
         $path_out = stream_get_meta_data($temp_out)['uri'];
         fwrite($temp_in, $text);
+
         try {
             $process = new Process([
                 "java",
@@ -151,27 +154,30 @@ class VietnameseAnalyzer
                 "-fout",
                 $path_out,
                 "-annotators",
-                "wseg,pos"
+                "wseg,pos",
             ], __DIR__);
             $process->run();
         } catch (\Exception $exception) {
         }
         fclose($temp_in);
-        if (!$process->isSuccessful()) {
+        if (! $process->isSuccessful()) {
             fclose($temp_out);
+
             throw new ProcessFailedException($process);
         }
         $tokens = explode("\n", fread($temp_out, 1024));
         fclose($temp_out);
         foreach ($tokens as $key => $value) {
-            if (!$value) {
+            if (! $value) {
                 unset($tokens[$key]);
+
                 continue;
             }
             $tokens[$key] = array_filter(explode("\t", $value), function ($k) {
                 return $k == 1 || $k == 2;
             }, ARRAY_FILTER_USE_KEY);
         }
+
         return $tokens;
     }
 
@@ -183,17 +189,17 @@ class VietnameseAnalyzer
      */
     protected function find_possition($needle, $text)
     {
-        $lastPos   = 0;
+        $lastPos = 0;
         $positions = [];
         while (($lastPos = strpos($text, "$needle-", $lastPos)) !== false) {
-            $remain_text       = substr($text, 0, $lastPos);
+            $remain_text = substr($text, 0, $lastPos);
             $position_diff_key = 0;
             foreach (explode("-", $remain_text) as $value) {
                 if (($words_count = strlen($value)) > 1) {
                     $position_diff_key += $words_count - 1;
                 }
             }
-            $types    = explode("-", $needle);
+            $types = explode("-", $needle);
             $position = [];
             foreach ($types as $key => $type) {
                 $position[] = $lastPos + $key - substr_count($remain_text, "-") - $position_diff_key;
@@ -201,6 +207,7 @@ class VietnameseAnalyzer
             $positions[] = $position;
             $lastPos++;
         }
+
         return $positions;
     }
 
@@ -215,6 +222,7 @@ class VietnameseAnalyzer
                 $new_pharse = "$new_pharse $pharse";
             }
         }
+
         return $new_pharse;
     }
 }
