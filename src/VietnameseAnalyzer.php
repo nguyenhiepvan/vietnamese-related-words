@@ -58,7 +58,7 @@ class VietnameseAnalyzer
 
     public function __construct($debug = false, $mapping = [])
     {
-        $this->mapping = array_unique(array_merge($this->mapping, $mapping, config("vietnamese-related-words.mapping", [])));
+        $this->mapping = array_unique(array_merge($this->mapping, $mapping, config("nguyenhiep.vietnamese-related-words.mapping", [])));
         $this->debug = $debug;
     }
 
@@ -70,7 +70,7 @@ class VietnameseAnalyzer
      */
     public function es_analyze($text)
     {
-        $client = new Client(["base_uri" => config("vietnamese-related-words.es_host")]);
+        $client = new Client(["base_uri" => config("nguyenhiep.vietnamese-related-words.es_host")]);
         $response = $client->request("GET", "_analyze", [
             RequestOptions::JSON => [
                 "analyzer" => "vi_analyzer",
