@@ -1,51 +1,43 @@
 {
-    "name": "nguyenhiep/vietnamese-related-words",
-    "description": "Make related words from vietnamese string",
-    "keywords": [
-        "related",
-        "words",
-        "related words",
-        "extract words",
-        "vietnamese"
-    ],
-    "homepage": "https://github.com/nguyenhiepvan/vietnamese-related-words",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Nguyễn Văn Hiệp",
-            "email": "nguyenheipvan.bka@gmail.com",
-            "role": "Developer"
-        }
-    ],
-    "require": {
-        "php": "^7.4|^8.0",
-        "guzzlehttp/guzzle": "^7.0.1",
-        "mockery/mockery": "^1.4",
-        "symfony/process": "^5.2",
-        "ext-json": "*"
-    },
-    "require-dev": {
-        "orchestra/testbench": "^5.0|^6.0",
-        "phpunit/phpunit": "^9.3",
-        "spatie/test-time": "^1.2"
-    },
-    "autoload": {
-        "psr-4": {
-            "Nguyenhiep\\VietnameseRelatedWords\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Spatie\\LaravelPackageTools\\Tests\\": "tests"
-        }
-    },
-    "scripts": {
-        "test": "vendor/bin/phpunit --colors=always",
-        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
-    },
-    "config": {
-        "sort-packages": true
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+  "name": "nguyenhiep/vietnamese-related-words",
+  "description": "Make related words from vietnamese string",
+  "keywords": [
+    "related",
+    "words",
+    "related words",
+    "extract words",
+    "vietnamese"
+  ],
+  "homepage": "https://github.com/nguyenhiepvan/vietnamese-related-words",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Nguyễn Văn Hiệp",
+      "email": "nguyenheipvan.bka@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "type": "library",
+  "require": {
+    "guzzlehttp/guzzle": "^7.0.1",
+    "spatie/laravel-package-tools": "1.6.3",
+    "symfony/process": "^5.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Nguyenhiep\\VietnameseRelatedWords\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Nguyenhiep\\VietnameseRelatedWords\\VietnameseRelatedWordsServiceProvider"
+      ]
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

@@ -9,12 +9,15 @@
 namespace Nguyenhiep\VietnameseRelatedWords;
 
 
+use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
+
 class VietnameseRelatedWordsServiceProvider extends PackageServiceProvider
 {
 
     public function configurePackage(Package $package): void
     {
-        $package->name('nguyenhiep/vietnamese-related-words')
-            ->hasConfigFile("vietnamese-related-words.php");
+        $package->name("nguyenhiep/vietnamese-related-words")
+            ->hasConfigFile();
     }
 }
