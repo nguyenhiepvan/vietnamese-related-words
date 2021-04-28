@@ -22,9 +22,9 @@ mapping | additional mapping rules
 ```phpt
     $analyer = new Nguyenhiep\VietnameseRelatedWords\VietnameseAnalyzer();
     //using vncorenlp
-    $analyer->vncorenlp("một chuỗi tiếng việt"); //["một","chuỗi","tiếng việt",]
+    $analyer->vncorenlp("một chuỗi tiếng việt"); //["chuỗi tiếng","một chuỗi","chuỗi tiếng việt",]
     //using coccoc tokenizer
-    $analyer->es_analyze("một chuỗi tiếng việt"); //["chuỗi tiếng","một chuỗi","chuỗi tiếng việt",]
+    $analyer->es_analyze("một chuỗi tiếng việt"); //["một","chuỗi","tiếng việt",]
     //using  VnTokenizer library
     $analyer->es_analyze("một chuỗi tiếng việt"); //["một","chuỗi","tiếng","việt",]
 ```
