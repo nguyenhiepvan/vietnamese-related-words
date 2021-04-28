@@ -9,7 +9,10 @@
 To configure the package you need to publish settings first:
 
 ```shell
-    php artisan vendor:publish --provider=" Nguyenhiep\VietnameseRelatedWords\VietnameseRelatedWordsServiceProvider"
+    php artisan vendor:publish --provider="Nguyenhiep\VietnameseRelatedWords\VietnameseRelatedWordsServiceProvider"
+```
+```shell
+    php artisan vendor:publish --tag=vietnamese-related-words-config
 ```
 Option | Description
 --- | ---
@@ -29,3 +32,4 @@ mapping | additional mapping rules
 - [VncoreNlp](https://github.com/vncorenlp/VnCoreNLP)
 - [Coccoc tokenizer](https://github.com/coccoc/coccoc-tokenizer)
 - [Vietnamese Analysis Plugin for Elasticsearch](https://github.com/duydo/elasticsearch-analysis-vietnamese)
+- [Laravel package tools](https://github.com/spatie/laravel-package-tools)
