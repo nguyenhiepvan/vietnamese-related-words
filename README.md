@@ -9,7 +9,10 @@
 To configure the package you need to publish settings first:
 
 ```shell
-    php artisan vendor:publish --provider=" Nguyenhiep\VietnameseRelatedWords\VietnameseRelatedWordsServiceProvider"
+    php artisan vendor:publish --provider="Nguyenhiep\VietnameseRelatedWords\VietnameseRelatedWordsServiceProvider"
+```
+```shell
+    php artisan vendor:publish --tag=vietnamese-related-words-config
 ```
 Option | Description
 --- | ---
