@@ -53,13 +53,15 @@ class VietnameseAnalyzer
         "V-V",
         "V-V-N",
         "V-Cc-V",
+        "M-N",
+        "N-N-V",
     ];
     protected $debug = false;
 
     public function __construct($debug = false, $mapping = [])
     {
         $this->mapping = array_unique(array_merge($this->mapping, $mapping, config("nguyenhiep.vietnamese-related-words.mapping", [])));
-        $this->debug = $debug;
+        $this->debug   = $debug;
     }
 
     /**
@@ -70,19 +72,22 @@ class VietnameseAnalyzer
      */
     public function es_analyze($text)
     {
-        $client = new Client(["base_uri" => config("nguyenhiep.vietnamese-related-words.es_host")]);
+        $client   = new Client(["base_uri" => config("nguyenhiep.vietnamese-related-words.es_host")]);
         $response = $client->request("GET", "_analyze", [
+            'headers'            => [
+                'Content-Type' => 'application/json'
+            ],
             RequestOptions::JSON => [
                 "analyzer" => "vi_analyzer",
-                "text" => $text,
+                "text"     => $text,
             ],
         ]);
 
         try {
-            $tokens = json_decode($response->getBody()->getContents(), true)["tokens"];
+            $tokens  = json_decode($response->getBody()->getContents(), true)["tokens"];
             $phrases = [];
             foreach ($tokens as $token) {
-                if ($token["type"] == "<WORD>") {
+                if (in_array($token["type"], ["<WORD>", "<PHRASE>"])) {
                     $phrases[] = $token["token"];
                 }
             }
@@ -102,7 +107,7 @@ class VietnameseAnalyzer
      */
     public function vncorenlp($text)
     {
-        $tokens = $this->getTokens($text);
+        $tokens      = $this->getTokens($text);
         $type_chains = "";
         foreach ($tokens as $token) {
             if (isset($token[2])) {
@@ -119,15 +124,15 @@ class VietnameseAnalyzer
                             $pharse .= "{$tokens[$p][1]}_";
                         }
                     }
-                    $pharse = str_replace("_", " ", $pharse);
+                    $pharse    = str_replace("_", " ", $pharse);
                     $pharses[] = trim($pharse) . ($this->debug ? ":$valid_chain" : "");
                 }
             }
         }
 
-        return array_unique(array_filter($pharses, function ($v, $k) {
+        return array_values(array_unique(array_filter($pharses, function ($v, $k) {
             return $v && substr_count($v, " ");
-        }, ARRAY_FILTER_USE_BOTH));
+        }, ARRAY_FILTER_USE_BOTH)));
     }
 
     /**
@@ -138,8 +143,8 @@ class VietnameseAnalyzer
      */
     protected function getTokens($text)
     {
-        $temp_in = tmpfile();
-        $path_in = stream_get_meta_data($temp_in)['uri'];
+        $temp_in  = tmpfile();
+        $path_in  = stream_get_meta_data($temp_in)['uri'];
         $temp_out = tmpfile();
         $path_out = stream_get_meta_data($temp_out)['uri'];
         fwrite($temp_in, $text);
@@ -160,7 +165,7 @@ class VietnameseAnalyzer
         } catch (\Exception $exception) {
         }
         fclose($temp_in);
-        if (! $process->isSuccessful()) {
+        if (!$process->isSuccessful()) {
             fclose($temp_out);
 
             throw new ProcessFailedException($process);
@@ -168,7 +173,7 @@ class VietnameseAnalyzer
         $tokens = explode("\n", fread($temp_out, 1024));
         fclose($temp_out);
         foreach ($tokens as $key => $value) {
-            if (! $value) {
+            if (!$value) {
                 unset($tokens[$key]);
 
                 continue;
@@ -189,17 +194,17 @@ class VietnameseAnalyzer
      */
     protected function find_possition($needle, $text)
     {
-        $lastPos = 0;
+        $lastPos   = 0;
         $positions = [];
         while (($lastPos = strpos($text, "$needle-", $lastPos)) !== false) {
-            $remain_text = substr($text, 0, $lastPos);
+            $remain_text       = substr($text, 0, $lastPos);
             $position_diff_key = 0;
             foreach (explode("-", $remain_text) as $value) {
                 if (($words_count = strlen($value)) > 1) {
                     $position_diff_key += $words_count - 1;
                 }
             }
-            $types = explode("-", $needle);
+            $types    = explode("-", $needle);
             $position = [];
             foreach ($types as $key => $type) {
                 $position[] = $lastPos + $key - substr_count($remain_text, "-") - $position_diff_key;

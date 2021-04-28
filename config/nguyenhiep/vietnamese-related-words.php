@@ -6,5 +6,5 @@
  * @Filename : vietnamese-related-words.php
  **/
 return [
-    "es_host" => "localhost:9200"
+    "es_host" => "http://localhost:9200"
 ];

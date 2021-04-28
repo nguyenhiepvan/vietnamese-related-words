@@ -11,22 +11,28 @@ To configure the package you need to publish settings first:
 ```shell
     php artisan vendor:publish --provider="Nguyenhiep\VietnameseRelatedWords\VietnameseRelatedWordsServiceProvider"
 ```
+
 Option | Description
 --- | ---
 es_host | elasticsearch host
 mapping | additional mapping rules
+
 # Usage
 
 ```phpt
     $analyer = new Nguyenhiep\VietnameseRelatedWords\VietnameseAnalyzer();
     //using vncorenlp
-    $analyer->vncorenlp("mối quan hệ biện chứng giữa vật chất và ý thức trong học tập"); //["quan hệ","vật chất","ý thức","học tập","quan hệ biện chứng","mối quan hệ","vật chất và ý thức",]
+    $analyer->vncorenlp("một chuỗi tiếng việt"); //["một","chuỗi","tiếng việt",]
     //using coccoc tokenizer
-    $analyer->es_analyze("mối quan hệ biện chứng giữa vật chất và ý thức trong học tập"); //["mối","quan hệ","biện chứng","giữa","vật chất","ý thức","trong","học tập",]
+    $analyer->es_analyze("một chuỗi tiếng việt"); //["chuỗi tiếng","một chuỗi","chuỗi tiếng việt",]
+    //using  VnTokenizer library
+    $analyer->es_analyze("một chuỗi tiếng việt"); //["một","chuỗi","tiếng","việt",]
 ```
 
 # Reference
+
 - [VncoreNlp](https://github.com/vncorenlp/VnCoreNLP)
 - [Coccoc tokenizer](https://github.com/coccoc/coccoc-tokenizer)
 - [Vietnamese Analysis Plugin for Elasticsearch](https://github.com/duydo/elasticsearch-analysis-vietnamese)
+- [Vietnamese Analysis Plugin for Elasticsearch](https://github.com/duydo/elasticsearch-analysis-vietnamese/tree/vntokenizer)
 - [Laravel package tools](https://github.com/spatie/laravel-package-tools)
