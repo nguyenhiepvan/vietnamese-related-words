@@ -12,7 +12,7 @@ class VietnameseRelatedWordsServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
-        $package->name('nguyenhiep/vietnamese-related-words')
-            ->hasConfigFile("vietnamese-related-words.php");
+        $package->name('vietnamese-related-words')
+            ->hasConfigFile();
     }
 }
