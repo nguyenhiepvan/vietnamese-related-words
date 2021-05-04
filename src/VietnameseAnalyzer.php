@@ -98,7 +98,7 @@ class VietnameseAnalyzer
                 }
             }
 
-            return array_values(array_unique(array_filter($pharses, function ($v, $k) {
+            return array_values(array_unique(array_filter($phrases, function ($v, $k) {
                 return $v && substr_count($v, " ");
             }, ARRAY_FILTER_USE_BOTH)));
         } catch (\Exception $exception) {
