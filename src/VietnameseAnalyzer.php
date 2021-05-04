@@ -142,7 +142,7 @@ class VietnameseAnalyzer
     protected function optimize($string)
     {
         //remove extention
-        $string = substr($string, 0, strrpos($string, "."));
+        $string = preg_replace('/\\.[^.\\s]{3,4}$/', '', $string);
         //normalize string
         $string = trim($string);
         $string = mb_strtolower($string);
