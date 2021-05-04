@@ -112,7 +112,6 @@ class VietnameseAnalyzer
     {
         $text   = $this->optimize($text);
         $tokens = $this->getTokens($text);
-        dump($tokens);
         $type_chains = "";
         foreach ($tokens as $token) {
             if (isset($token[2])) {
