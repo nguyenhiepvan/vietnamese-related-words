@@ -30,7 +30,9 @@ mapping | additional mapping rules
 ```
 
 **Notice:** 
+
     - if you want to see analying results, add param `true` to analyer construct
+   
     - if you want to add more mapping rules, add them in `vietnamese-related-words.php`
 
 # Reference
