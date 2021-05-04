@@ -141,6 +141,8 @@ class VietnameseAnalyzer
 
     protected function optimize($string)
     {
+        $string = str_replace("-"," ",$string);
+        $string = str_replace("_"," ",$string);
         //remove extention
         $string = preg_replace('/\\.[^.\\s]{3,4}$/', '', $string);
         //normalize string
