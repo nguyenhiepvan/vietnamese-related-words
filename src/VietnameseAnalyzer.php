@@ -188,6 +188,7 @@ class VietnameseAnalyzer
         try {
             $process = new Process([
                 "java",
+                "-Xmx500m",
                 "-jar",
                 "VnCoreNLP-1.1.1.jar",
                 "-fin",
