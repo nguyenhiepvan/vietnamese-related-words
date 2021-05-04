@@ -88,6 +88,9 @@ class VietnameseAnalyzer
 
         try {
             $tokens  = json_decode($response->getBody()->getContents(), true)["tokens"];
+            if ($this->debug){
+                dump($tokens);
+            }
             $phrases = [];
             foreach ($tokens as $token) {
                 if (in_array($token["type"], ["<WORD>", "<PHRASE>"])) {
@@ -112,6 +115,9 @@ class VietnameseAnalyzer
     {
         $text   = $this->optimize($text);
         $tokens = $this->getTokens($text);
+        if ($this->debug){
+            dump($tokens);
+        }
         $type_chains = "";
         foreach ($tokens as $token) {
             if (isset($token[2])) {
@@ -141,8 +147,17 @@ class VietnameseAnalyzer
 
     protected function optimize($string)
     {
-        $string = str_replace("-"," ",$string);
-        $string = str_replace("_"," ",$string);
+        if (!substr_count($string, ' ')){
+            //string inclue "-" or "_"
+            $string = str_replace("-"," ",$string);
+            $string = str_replace("_"," ",$string);
+            //string camelCase format
+            if ($arr = preg_split('/(?=[A-Z])/',$string)){
+                $string = implode(" ",$arr);
+            }
+            
+        }
+
         //remove extention
         $string = preg_replace('/\\.[^.\\s]{3,4}$/', '', $string);
         //normalize string
