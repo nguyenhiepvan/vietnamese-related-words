@@ -28,6 +28,7 @@ mapping | additional mapping rules
     //using  VnTokenizer library
     $analyer->es_analyze("một chuỗi tiếng việt"); //["một","chuỗi","tiếng","việt",]
 ```
+**Notice:** if you want to see analying results, add param `true` to analyer construct
 
 # Reference
 
