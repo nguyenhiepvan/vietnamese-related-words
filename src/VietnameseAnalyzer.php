@@ -52,6 +52,8 @@ class VietnameseAnalyzer
         "V-A",
         "V-V",
         "V-V-N",
+        "P-V",
+        "V-P-V",
         "V-Cc-V",
         "M-N",
         "N-N-V",
@@ -72,6 +74,7 @@ class VietnameseAnalyzer
      */
     public function es_analyze($text)
     {
+        $text     = $this->optimize($text);
         $client   = new Client(["base_uri" => config("nguyenhiep.vietnamese-related-words.es_host")]);
         $response = $client->request("GET", "_analyze", [
             'headers'            => [
@@ -107,7 +110,9 @@ class VietnameseAnalyzer
      */
     public function vncorenlp($text)
     {
-        $tokens      = $this->getTokens($text);
+        $text   = $this->optimize($text);
+        $tokens = $this->getTokens($text);
+        dump($tokens);
         $type_chains = "";
         foreach ($tokens as $token) {
             if (isset($token[2])) {
@@ -133,6 +138,19 @@ class VietnameseAnalyzer
         return array_values(array_unique(array_filter($pharses, function ($v, $k) {
             return $v && substr_count($v, " ");
         }, ARRAY_FILTER_USE_BOTH)));
+    }
+
+    protected function optimize($string)
+    {
+        //remove extention
+        $string = substr($string, 0, strrpos($string, "."));
+        //normalize string
+        $string = trim($string);
+        $string = mb_strtolower($string);
+        $string = preg_replace("/[^\p{M}\w\s]+/ui", " ", $string);
+        $string = preg_replace("/\s{2,}/", " ", $string);
+        $string = trim($string);
+        return $string;
     }
 
     /**
