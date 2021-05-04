@@ -98,7 +98,9 @@ class VietnameseAnalyzer
                 }
             }
 
-            return array_unique($phrases);
+            return array_values(array_unique(array_filter($pharses, function ($v, $k) {
+                return $v && substr_count($v, " ");
+            }, ARRAY_FILTER_USE_BOTH)));
         } catch (\Exception $exception) {
         }
 
@@ -155,7 +157,7 @@ class VietnameseAnalyzer
             if ($arr = preg_split('/(?=[A-Z])/',$string)){
                 $string = implode(" ",$arr);
             }
-            
+
         }
 
         //remove extention
