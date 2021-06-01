@@ -19,7 +19,7 @@
   ],
   "type": "library",
   "require": {
-    "guzzlehttp/guzzle": "^7.0.1",
+    "guzzlehttp/guzzle": "^6.3|^7.0.1",
     "spatie/laravel-package-tools": "1.6.3",
     "symfony/process": "^5.2"
   },
